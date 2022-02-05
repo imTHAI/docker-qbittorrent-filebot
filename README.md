@@ -21,9 +21,42 @@ You can set different variables:
 | **PUID** | 99
 | **PGID** | 100
 | **FILES_CHECK_PERM** | no
+| **WEBUI** | 8080
 
-#### Please READ:
+### Please READ:
 * Set your PUID and PGID according to your system ! I've set 99/100 because it's the default one on unRAID.
 * Be aware that {plex} movie format will put movies in Movies folder. So if it's not what you want, don't forget to adapt. I personnaly use "movies/{plex.tail}"
 * Be carefull with FILES_CHECK_PERM. If you set to yes, it can take a long time to scan your media folder and then you will have to wait before you get the Qbt web interface.
 * FILEBOT_ACTION is set to copy by default, so it can take time/disk pace, especialy with big movies. You change change to move | symlink | hardlink | test. But if you set to move, you can't seed. If you set to symlink, it doesn't work well with docker volume shares. Test what is best for you.
+* You can change the webport with the variable WEBUI_PORT. I personnaly use 80.
+* Don't forget to add your Filebot license file (psm file) into /data/filebot folder then restart)
+* Qbt login/password is admin/adminadmin as usual.
+
+### Volumes
+
+/data : folder for the config
+/downloads : folder for downloads
+/media : folder for media
+
+### Ports
+
+ - `8080` (WEBUI)
+ - `6881` (PORT_RTORRENT)
+
+## usage example (I like to set one ip per container)
+```sh
+docker run -d --name='qbittorrent-filebot' \
+--net='br0' --ip='10.0.1.25' -e TZ="Europe/Paris" \
+-e MOVIE_FORMAT='/media/movies/{plex.tail}' \
+-e SERIE_FORMAT='/media/series/{plex[1]}/{'\''Season '\''+s}/{plex.name}' \
+-e PUID=99 -e PGID=100 \
+-e WEBUI_PORT=80 \
+-v /mnt/user/media/:/media:rw \
+-v /mnt/user/media/downloads/:/downloads:rw \
+-v /mnt/user/appdata/qbittorrent-filebot/:/data:rw \
+imthai/qbittorrent-filebot
+```
+
+
+<a href="https://www.buymeacoffee.com/pbear" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
