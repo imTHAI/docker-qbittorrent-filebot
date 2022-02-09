@@ -17,7 +17,7 @@ You can set different variables:
 | **MUSIC_FORMAT** | {plex}
 | **MOVIE_FORMAT** | {plex}
 | **SERIE_FORMAT** | {plex}
-| **ANIME_FORMAT** | {plex}
+| **ANIME_FORMAT** | animes/{n}/{e.pad(3)} - {t}
 | **PUID** | 99
 | **PGID** | 100
 | **FILES_CHECK_PERM** | no
