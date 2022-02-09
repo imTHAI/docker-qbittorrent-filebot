@@ -6,7 +6,7 @@ For QBittorrent, I used [linuxserver/qbittorrent docker](https://hub.docker.com/
 For Filebot, please see https://www.filebot.net
 
 
-You can set different variables:
+### You can set different variables:
 
 | Variable |  Default value |
 | -------- |  ------------- |
@@ -32,18 +32,18 @@ You can set different variables:
 * Don't forget to add your Filebot license file (psm file) into /data/filebot folder then restart
 * Qbt login/password is admin/adminadmin as usual.
 
-### Volumes
+### Volumes:
 
 /data : folder for the config
 /downloads : folder for downloads
 /media : folder for media
 
-### Ports
+### Ports:
 
  - `8080` (WEBUI)
  - `6881` (PORT_RTORRENT)
 
-## usage example (I like to set one ip per container)
+## Usage example (I like to set one ip per container, but it's up to you):
 ```sh
 docker run -d --name='qbittorrent-filebot' \
 --net='br0' --ip='10.0.1.25' -e TZ="Europe/Paris" \
