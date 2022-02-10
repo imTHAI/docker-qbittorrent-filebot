@@ -24,6 +24,7 @@ For Filebot, please see https://www.filebot.net
 | **WEBUI** | 8080
 
 ### Please READ:
+* The default login/password is the default one of an official qbittorrent release: admin/adminadmin
 * Set your PUID and PGID according to your system ! I've set 99/100 because it's the default one on unRAID.
 * Be aware that {plex} movie format will put movies in Movies folder. Same for Tvshows ({plex} => "/TV Shows"), and for music ({plex} => "/Music"). So if it's not what you want, don't forget to adapt. I personnaly use "movies/{plex.tail}" etc...
 * Be carefull with FILES_CHECK_PERM. If you set to yes, it can take a long time to scan your media folder and then you will have to wait before you get the Qbt web interface.
