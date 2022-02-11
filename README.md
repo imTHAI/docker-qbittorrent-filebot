@@ -28,7 +28,7 @@ For Filebot, please see https://www.filebot.net
 * Be aware that {plex} movie format will put movies in Movies folder. Same for Tvshows ({plex} => "/TV Shows"), and for music ({plex} => "/Music"). So if it's not what you want, don't forget to adapt. I personnaly use "movies/{plex.tail}" etc...
 * Be carefull with FILES_CHECK_PERM. If you set to yes, it can take a long time to scan your media folder and then you will have to wait before you get the Qbt web interface.
 * FILEBOT_ACTION is set to copy by default, so it can take time/disk pace, especialy with big movies. You can change to move | symlink | hardlink | test. But if you set to 'move', you won't seed anymore. If you set to symlink, it doesn't work well with docker volume shares. Well, test what works best for you.
-* You can change the webport with the variable WEBUI_PORT. I personnaly use 80.
+* You can change the webport with the variable WEBUI_PORT. I personnaly use 80. (**But** don't forget port mapping if you use bridge network and not a dedicated ip)
 * Don't forget to add your Filebot license file (psm file) into /data/filebot folder then restart
 * Qbt login/password is admin/adminadmin as usual.
 
