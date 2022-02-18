@@ -34,9 +34,9 @@ For Filebot, please see https://www.filebot.net
 
 ### Volumes:
 
-/data : folder for the config
-/downloads : folder for downloads
-/media : folder for media
+- /data : folder for the config
+- /downloads : folder for downloads
+- /media : folder for media
 
 ### Ports:
 
