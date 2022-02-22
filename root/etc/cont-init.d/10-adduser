@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+
+groupmod -o -g "$PGID" abc
+usermod -o -u "$PUID" abc
+
+chown abc:abc /app
+chown abc:abc /config
+chown abc:abc /defaults
