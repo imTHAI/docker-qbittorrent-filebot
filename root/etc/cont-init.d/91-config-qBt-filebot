@@ -1,0 +1,49 @@
+#!/usr/bin/with-contenv bash
+
+mkdir -p /data/filebot/logs /data/qBittorrent
+
+if [ ! -f /data/qBittorrent/qBittorrent.conf ]; then cp /src/qBittorrent.conf /data/qBittorrent ; fi
+cp /src/fb.sh /data/filebot
+
+# Check config AutoRun:
+test="0"
+test=$(awk 'FNR==NR {a[FNR]=$0; next} FNR==1 && NR>1 {for (i in a) len++} \
+{for (i=last; i<=len; i++) {if (a[i]==$0) {last=i; next}} status=1} END {print status+0}' \
+/data/qBittorrent/qBittorrent.conf /src/check)
+if [ "$test" -eq "1" ]; then cp /src/qBittorrent.conf /data/qBittorrent ; fi
+
+# Set the license:
+license=$(find /data/ -iname "*.psm" | head -n1)
+if ! [ -z "${license}" ];
+   then sh /filebot/filebot.sh --license=${license}
+else
+   echo -e "#####\n#\n#>> No license detected for FILEBOT.\n#>> Plz put you license psm file in /data/filebot folder\n#\n#\n#####"
+fi
+
+# Set extra filebot parameters
+if ! [ -z "${EXTRA_FILEBOT_PARAM}" ];
+then
+  sed -i '/output/a "${EXTRA_FILEBOT_PARAM}" \\' /data/filebot/fb.sh
+else
+  sed -i '/EXTRA_FILEBOT_PARAM/d' /data/filebot/fb.sh
+fi
+
+# Futur feature
+# Clear the status of opensubtitles
+#rm /filebot/osdb.loggedin 2> /dev/null
+
+
+
+# Fix some permissions:
+chown -R ${PUID}:${PGID} \
+        /usr/local/bin \
+        /data \
+	/filebot
+chmod +x /data/filebot/fb.sh
+
+# Check files permssions if asked (default is no):
+# Be aware that it can take long time if you have a big /media folder
+# and then you' ll have to wait before you get the web interface of qbittorrent !
+if [[ ${FILES_CHECK_PERM} =~ [yY] ]]; then chown -R ${PUID}:${PGID} /media ; fi
+
+exit
