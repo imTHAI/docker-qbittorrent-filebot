@@ -10,7 +10,7 @@ test="0"
 test=$(awk 'FNR==NR {a[FNR]=$0; next} FNR==1 && NR>1 {for (i in a) len++} \
 {for (i=last; i<=len; i++) {if (a[i]==$0) {last=i; next}} status=1} END {print status+0}' \
 /data/qBittorrent/qBittorrent.conf /src/check)
-if [ "$test" -eq "1" ]; then cp /src/qBittorrent.conf /data/qBittorrent ; fi
+if [[ "$test" -eq "1" ]]; then cp /src/qBittorrent.conf /data/qBittorrent ; fi
 
 # Set the license:
 license=$(find /data/ -iname "*.psm" | head -n1)
