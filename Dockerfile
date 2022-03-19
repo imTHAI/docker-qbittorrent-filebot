@@ -1,6 +1,6 @@
 FROM linuxserver/qbittorrent
 
-ARG FILEBOT_VER=4.9.4
+ARG FILEBOT_VER=4.9.6
 
 RUN	apk update \
 	&& apk upgrade \
