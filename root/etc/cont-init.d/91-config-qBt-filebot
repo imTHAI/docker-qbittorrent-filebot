@@ -6,11 +6,7 @@ if [ ! -f /data/qBittorrent/qBittorrent.conf ]; then cp /src/qBittorrent.conf /d
 cp /src/fb.sh /data/filebot
 
 # Check config AutoRun:
-test="0"
-test=$(awk 'FNR==NR {a[FNR]=$0; next} FNR==1 && NR>1 {for (i in a) len++} \
-{for (i=last; i<=len; i++) {if (a[i]==$0) {last=i; next}} status=1} END {print status+0}' \
-/data/qBittorrent/qBittorrent.conf /src/qBittorrent.conf)
-if [[ "$test" -eq "1" ]]; then cp /src/qBittorrent.conf /data/qBittorrent ; fi
+if [[ $(comm -13 <(sort -u /data/qBittorrent/qBittorrent.conf) <(sort -u /src/check)) ]]; then cp /src/qBittorrent.conf /data/qBittorrent/qBittorrent.conf ; fi
 
 # Set the license:
 license=$(find /data/ -iname "*.psm" | head -n1)
