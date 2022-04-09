@@ -1,0 +1,3 @@
+[AutoRun]
+enabled=true
+program=/data/filebot/fb.sh \"%F\" \"%N\" \"%L\"
