@@ -3,7 +3,10 @@
 mkdir -p /data/filebot/logs /data/qBittorrent
 
 if [ ! -f /data/qBittorrent/qBittorrent.conf ]; then cp /src/qBittorrent.conf /data/qBittorrent ; fi
-cp /src/fb.sh /data/filebot
+
+#if user customized, don't touch it
+script=/data/filebot/fb.sh
+if [ -f "$script" ] && [ ! -z $(grep "custom=1" "$script") ]; then :; else cp /src/fb.sh /data/filebot; fi
 
 # Check config AutoRun:
 if [[ $(comm -13 <(sort -u /data/qBittorrent/qBittorrent.conf) <(sort -u /src/check)) ]]; then cp /src/qBittorrent.conf /data/qBittorrent/qBittorrent.conf ; fi
