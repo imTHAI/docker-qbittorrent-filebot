@@ -5,6 +5,9 @@
 # touch /filebot/osdb.loggedin
 #fi
 
+# Set this to 1 if you want to customize the fb.sh script. So it won't be reset at restart.
+custom=0
+
 /filebot/filebot.sh \
 -script fn:amc \
 --output /media \
