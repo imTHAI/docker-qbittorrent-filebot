@@ -31,6 +31,7 @@ For Filebot, please see https://www.filebot.net
 * You can change the webport with the variable WEBUI_PORT. I personnaly use 80. (**But** don't forget port mapping if you use bridge network rather than a dedicated ip)
 * Don't forget to add your Filebot license file (psm file) into /data/filebot folder then restart
 * Qbt login/password is admin/adminadmin as usual.
+* If you want to customize the script that calls filebot (fb.sh) , set the variable custom=1 inside the script. So it won't be replaced anymore at restart. 
 
 ### Volumes:
 
