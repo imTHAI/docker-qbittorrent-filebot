@@ -1,7 +1,7 @@
-# docker-qbittorrent-filebot
-qbittorrent including Filebot tool
+# docker-qBittorrent-filebot
+qBittorrent including Filebot tool
 
-For QBittorrent, I used [linuxserver/qbittorrent docker](https://hub.docker.com/r/linuxserver/qbittorrent).
+For qBittorrent, I used [linuxserver/qbittorrent docker](https://hub.docker.com/r/linuxserver/qbittorrent).
 
 For Filebot, please see https://www.filebot.net
 
