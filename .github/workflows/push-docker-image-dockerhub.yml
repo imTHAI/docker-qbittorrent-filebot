@@ -1,6 +1,9 @@
 name: Build and Push Docker image to Docker Hub
 
 on: push
+
+  workflow_dispatch:
+
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
@@ -26,4 +29,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: devopshint/node-app:latest
+          tags: imthai/qbittorrent-filebot:latest
