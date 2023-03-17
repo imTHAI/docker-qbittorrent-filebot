@@ -17,5 +17,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      working-directory: docker-qbittorrent-filebot
+      working-directory: .
       run: docker build . --file Dockerfile --tag qbittorrent-filebot:$(date +%s)
