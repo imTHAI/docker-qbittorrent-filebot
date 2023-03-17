@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: none #[ "main" ]
 
-  workflow-dispatch:
+  workflow_dispatch:
 
 jobs:
 
