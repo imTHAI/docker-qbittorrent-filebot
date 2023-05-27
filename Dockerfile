@@ -38,6 +38,7 @@ ENV FILEBOT_LANG=en \
     MOVIE_FORMAT={plex} \
     SERIE_FORMAT={plex} \
     ANIME_FORMAT="animes/{n}/{e.pad(3)} - {t}" \
+    FILEBOT_OPTS=-Dnet.filebot.archive.unrar=/usr/bin/unrar \
     EXTRA_FILEBOT_PARAM=
 
 # environment settings
