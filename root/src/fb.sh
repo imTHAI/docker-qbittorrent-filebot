@@ -11,6 +11,7 @@ custom=0
 /filebot/filebot.sh \
 -script fn:amc \
 --output /media \
+--conflict auto \
 --lang "$FILEBOT_LANG" \
 --action "$FILEBOT_ACTION" \
 --conflict "$FILEBOT_CONFLICT" \
