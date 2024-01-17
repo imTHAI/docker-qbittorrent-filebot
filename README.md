@@ -25,13 +25,13 @@ For Filebot, please see https://www.filebot.net
 
 ### Please READ:
 * Set your PUID and PGID according to your system ! I've set 99/100 because it's the default one on unRAID.
-* Be aware that {plex} movie format will put movies in Movies folder. Same for Tvshows ({plex} => "/TV Shows"), and for music ({plex} => "/Music"). So if it's not what you want, don't forget to adapt. I personnaly use "movies/{plex.tail}" etc...
+* Be aware that {plex} movie format will put movies in Movies folder. Same for Tvshows ({plex} => "/TV Shows"), and for music ({plex} => "/Music"). So if it's not what you want, don't forget to adapt. I personally use "movies/{~plex.id}", "tvshows/{~plex.id}" etc...
 * Be carefull with FILES_CHECK_PERM. If you set to yes, it can take a long time to scan your media folder and then you will have to wait before you get the Qbt web interface.
-* FILEBOT_ACTION is set to copy by default, so it can take time/disk pace, especialy with big movies. You can change to copy | move | symlink | hardlink | keeplink | test. But if you set to 'move', you won't seed anymore. Plex won't work with the symlinks. For hardlink your torrent downloads and Media Library must be on the same filesystem **AND** your input/output paths must be on the same docker volume because docker treats each volume mount as a separate fs. The keeplink is a Filebot concept and corresponds to a reversed symlink. It works with Plex and the symlink works with qBt.  
-* You can change the webport with the variable WEBUI_PORT. I personnaly use 80. (But don't forget port mapping if you use bridge network rather than a dedicated ip)
+* FILEBOT_ACTION is set to copy by default, so it can take time/disk space, especialy with big movies. You can change to copy | move | symlink | hardlink | keeplink | test. But if you set to 'move', you won't seed anymore. Plex won't work with the symlinks. For hardlink your torrent downloads and Media Library must be on the same filesystem **AND** your input/output paths must be on the same docker volume because docker treats each volume mount as a separate fs. The keeplink is a Filebot concept and corresponds to a reversed symlink. It works with Plex and the symlink works with qBt.  
+* You can change the webport with the variable WEBUI_PORT. I personally use 80. (But don't forget port mapping if you use bridge network rather than a dedicated ip)
 * Don't forget to add your Filebot license file (psm file) into /data/filebot folder then restart
-* Qbt login/password is admin/adminadmin as usual.
-* If you want to customize the script that calls filebot (fb.sh) , set the variable custom=1 inside the script. So it won't be replaced anymore at restart. 
+* Qbt login/password is admin/adminadmin by default.
+* If you want to customize the script that calls filebot (fb.sh) , set the variable custom=1 inside the script, it will no longer be replaced when restarted.
 
 ### Volumes:
 
