@@ -48,8 +48,8 @@ For Filebot, please see https://www.filebot.net
 ```sh
 docker run -d --name='qbittorrent-filebot' \
 --net='br0' --ip='10.0.1.25' -e TZ="Europe/Paris" \
--e MOVIE_FORMAT='/media/movies/{plex.tail}' \
--e SERIE_FORMAT='/media/series/{plex[1]}/{'\''Season '\''+s}/{plex.name}' \
+-e MOVIE_FORMAT='/media/movies/{~plex.id}' \
+-e SERIE_FORMAT='/media/series/{~plex.id}' \
 -e PUID=99 -e PGID=100 \
 -e WEBUI_PORT=80 \
 -v /mnt/user/media:/media:rw \
