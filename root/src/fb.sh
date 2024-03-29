@@ -19,7 +19,7 @@ custom=0
 -non-strict \
 --def \
 unsorted=y \
-music=/media/"$FILEBOT_PROCESS_MUSIC" \
+music="$FILEBOT_PROCESS_MUSIC" \
 musicFormat=/media/"$MUSIC_FORMAT" \
 artwork=/media/"$FILEBOT_ARTWORK" \
 movieFormat=/media/"$MOVIE_FORMAT" \
