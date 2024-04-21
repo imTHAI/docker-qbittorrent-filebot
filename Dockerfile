@@ -1,14 +1,13 @@
 FROM linuxserver/qbittorrent
 
-ARG FILEBOT_VER=5.0.3
-
 RUN	apk update \
 	&& apk upgrade \
 	&& apk add --no-progress --no-cache chromaprint openjdk11 openjdk11-jre zlib-dev libzen \
 	libzen-dev libmediainfo libmediainfo-dev \
 	&& mkdir -p /filebot /config/filebot/logs /downloads \
 	&& cd /filebot \
-	&& wget "https://get.filebot.net/filebot/FileBot_${FILEBOT_VER}/FileBot_${FILEBOT_VER}-portable.tar.xz" -O /filebot/filebot.tar.xz \
+	&& FILEBOT_VER="$(curl -s https://get.filebot.net/filebot/ | grep -o "FileBot_[0-9].[0-9].[0-9]" | sort | tail -n1)" \
+ 	&& wget "https://get.filebot.net/filebot/${FILEBOT_VER}/{FILEBOT_VER}-portable.tar.xz" -O /filebot/filebot.tar.xz \
 	&& tar -xJf filebot.tar.xz \
 	&& rm -rf filebot.tar.xz \
 	# Fix filebot libs
