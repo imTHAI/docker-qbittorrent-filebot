@@ -6,7 +6,7 @@ RUN	apk update \
 	libzen-dev libmediainfo libmediainfo-dev \
 	&& mkdir -p /filebot /config/filebot/logs /downloads \
 	&& cd /filebot \
-	&& FILEBOT_VER="$(curl -s https://get.filebot.net/filebot/ | grep -o "FileBot_[0-9].[0-9].[0-9]" | sort | tail -n1)" \
+	&& FILEBOT_VER=$(curl -s https://get.filebot.net/filebot/ | grep -o "FileBot_[0-9].[0-9].[0-9]" | sort | tail -n1) \
  	&& wget "https://get.filebot.net/filebot/${FILEBOT_VER}/{FILEBOT_VER}-portable.tar.xz" -O /filebot/filebot.tar.xz \
 	&& tar -xJf filebot.tar.xz \
 	&& rm -rf filebot.tar.xz \
