@@ -14,7 +14,7 @@ For Filebot, please see https://www.filebot.net
 | **FILEBOT_ACTION** | copy
 | **FILEBOT_CONFLICT** | auto
 | **FILEBOT_ARTWORK** | yes
-| **MUSIC_FORMAT** | {artist} - {t}
+| **MUSIC_FORMAT** | {plex}
 | **MOVIE_FORMAT** | {plex.id}
 | **SERIE_FORMAT** | {plex.id}
 | **ANIME_FORMAT** | animes/{n}/{e.pad(3)} - {t}
