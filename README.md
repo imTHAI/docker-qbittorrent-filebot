@@ -15,8 +15,8 @@ For Filebot, please see https://www.filebot.net
 | **FILEBOT_CONFLICT** | auto
 | **FILEBOT_ARTWORK** | yes
 | **MUSIC_FORMAT** | {plex}
-| **MOVIE_FORMAT** | {plex.id}
-| **SERIE_FORMAT** | {plex.id}
+| **MOVIE_FORMAT** | {plex}
+| **SERIE_FORMAT** | {plex}
 | **ANIME_FORMAT** | animes/{n}/{e.pad(3)} - {t}
 | **PUID** | 99
 | **PGID** | 100
@@ -32,7 +32,7 @@ For Filebot, please see https://www.filebot.net
 * Don't forget to add your Filebot license file (psm file) into /data/filebot folder then restart
 * Qbt login/password is admin/adminadmin by default.
 * If you want to customize the script that calls filebot (fb.sh) , set the variable custom=1 inside the script, it will no longer be replaced when restarted.
-* Using {plex.id} in place of {plex} will include the movie/serie ID in the folder name. It's the default naming scheme in Filebot, i.e. more machine-friendly naming with {tmdb-123} markers, so it works better with Plex / Kodi / Emby / Jellyfin  (see https://www.filebot.net/forums/viewtopic.php?t=13406)
+* Using {plex.id} in place of {plex} will include the movie/serie numeric ID in the folder name. It's the default naming scheme in Filebot, i.e. more machine-friendly naming with {tmdb-123} markers, so it works better with Plex / Kodi / Emby / Jellyfin  (see https://www.filebot.net/forums/viewtopic.php?t=13406)
 
 ### Volumes:
 
