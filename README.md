@@ -52,7 +52,7 @@ docker run -d --name='qbittorrent-filebot' \
 -e MOVIE_FORMAT='movies/{~plex.id}' \
 -e SERIE_FORMAT='tvshows/{~plex.id}' \
 -e PUID=99 -e PGID=100 \
--e WEBUI_PORT=80 \
+-e WEBUI_PORT=8080 \
 -v /mnt/user/media:/media:rw \
 -v /mnt/user/downloads:/downloads:rw \
 -v /mnt/user/appdata/qbittorrent-filebot:/data:rw \
