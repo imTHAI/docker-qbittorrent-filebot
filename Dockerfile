@@ -48,6 +48,7 @@ XDG_DATA_HOME="/data"
 
 # add local files
 COPY root/ /
+RUN chmod +x /etc/cont-init.d/*
 VOLUME ["/data"]
 VOLUME ["/downloads"]
 VOLUME ["/media"]
