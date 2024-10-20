@@ -55,4 +55,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}/qbittorrent-filebot:latest
+          tags: ghcr.io/${{ github.repository }}/docker-qbittorrent-filebot:latest
