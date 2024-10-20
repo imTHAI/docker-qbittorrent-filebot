@@ -1,4 +1,4 @@
-name: Build and Push Docker image to Docker Hub
+name: Build and Push Docker image
 
 on:
   push:
@@ -7,10 +7,13 @@ on:
   pull_request:
     branches: 
       - main
+  repository_dispatch:
+    types: [trigger-build]
+  workflow_dispatch: # Allows manual triggering
+
 
 jobs:
   build:
-    
     runs-on: ubuntu-latest
     
     steps:
@@ -25,17 +28,31 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Extract metadata (tags, labels) for Docker
         uses: docker/metadata-action@v3
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/qbittorrent-filebot
-          tags: true
-          labels: true
+          images: |
+            ${{ secrets.DOCKER_USERNAME }}/qbittorrent-filebot
+            ghcr.io/${{ github.repository }}/qbittorrent-filebot
       
-      - name: Build and push Docker image
+      - name: Build and push Docker image to GitHub
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/qbittorrent-filebot:latest
+
+      - name: Build and push Docker image to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}/qbittorrent-filebot:latest
