@@ -1,4 +1,8 @@
 # docker-qBittorrent-filebot
+![Docker Pulls](https://img.shields.io/docker/pulls/imthai/qbittorrent-filebot)
+![Docker Stars](https://img.shields.io/docker/stars/imthai/qbittorrent-filebot)
+
+
 qBittorrent including Filebot tool
 
 For qBittorrent, I used [linuxserver/qbittorrent docker](https://hub.docker.com/r/linuxserver/qbittorrent).
