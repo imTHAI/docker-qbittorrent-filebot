@@ -20,11 +20,11 @@ custom=0
 --def \
 unsorted=y \
 music="$FILEBOT_PROCESS_MUSIC" \
-musicFormat=/media/"$MUSIC_FORMAT" \
+musicFormat="$MUSIC_FORMAT" \
 artwork="$FILEBOT_ARTWORK" \
-movieFormat=/media/"$MOVIE_FORMAT" \
-seriesFormat=/media/"$SERIE_FORMAT" \
-animeFormat=/media/"$ANIME_FORMAT" \
+movieFormat="$MOVIE_FORMAT" \
+seriesFormat="$SERIE_FORMAT" \
+animeFormat="$ANIME_FORMAT" \
 ut_kind=multi \
 ut_dir="$1" \
 ut_title="$2" \
