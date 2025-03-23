@@ -1,34 +1,80 @@
-FROM linuxserver/qbittorrent
+# Use Ubuntu rolling as base image
+FROM ubuntu:rolling
 
-RUN	apk update \
-	&& apk upgrade \
-	&& apk add --no-progress --no-cache chromaprint openjdk11 openjdk11-jre zlib-dev libzen \
-	libzen-dev libmediainfo libmediainfo-dev \
-	&& mkdir -p /filebot /config/filebot/logs /downloads \
-	&& cd /filebot \
-	&& FILEBOT_VER=$(curl -s https://get.filebot.net/filebot/ | grep -o "FileBot_[0-9].[0-9].[0-9]" | sort | tail -n1) \
- 	&& wget "https://get.filebot.net/filebot/${FILEBOT_VER}/${FILEBOT_VER}-portable.tar.xz" -O /filebot/filebot.tar.xz \
-	&& tar -xJf filebot.tar.xz \
-	&& rm -rf filebot.tar.xz \
-	# Fix filebot libs
-	&& ln -sf /usr/lib/libzen.so /filebot/lib/Linux-x86_64/libzen.so \
-	&& ln -sf /usr/lib/libmediainfo.so /filebot/lib/Linux-x86_64/libmediainfo.so \
-	&& ln -sf /usr/local/lib/lib7-Zip-JBinding.so /filebot/lib/Linux-x86_64/lib7-Zip-JBinding.so \
-	&& rm -rf /filebot/lib/FreeBSD-amd64 /filebot/lib/Linux-armv7l /filebot/lib/Linux-i686 /filebot/lib/Linux-aarch64
+# Set default values for build
+ARG PUID=99
+ARG PGID=100
 
-# Make Filebot binary runable from everywhere:
-ENV PATH="/filebot:${PATH}"
+# Update packages and install necessary dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        software-properties-common \
+        gnupg \
+        curl \
+        apt-transport-https \
+        ca-certificates \
+        openjdk-21-jre-headless \
+        unzip \
+        unrar \
+        p7zip-full \
+        p7zip-rar \
+        xz-utils \
+        locales \
+        mediainfo \
+        imagemagick \
+        webp \
+        file \
+        rsync \
+        jdupes \
+        duperemove \
+        libchromaprint-tools \
+        gosu && \
+    add-apt-repository ppa:qbittorrent-team/qbittorrent-stable && \
+    apt-get update && \
+    apt-get install -y qbittorrent-nox && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen en_US.UTF-8 &&\
+    update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
-# Set the uid/gid:
-ENV PUID=99 \
-    PGID=100 \
-    WEBUI_PORT=
+# Configuration des répertoires et permissions
+RUN mkdir -p \
+    /filebot/data \
+    /data/filebot/logs \
+    /downloads \
+    /media \
+    /data/qBittorrent \
+    && chmod -R 755 /filebot /downloads /data /media
 
-# Various:
-ENV FILES_CHECK_PERM=n
+# Install FileBot
+RUN FILEBOT_VER=$(curl -s https://get.filebot.net/filebot/ | grep -o "FileBot_[0-9].[0-9].[0-9]" | sort | tail -n1) && \
+    curl -L "https://get.filebot.net/filebot/${FILEBOT_VER}/${FILEBOT_VER}-portable.tar.xz" -o /filebot/filebot.tar.xz && \
+    tar -xJf /filebot/filebot.tar.xz -C /filebot && \
+    rm -rf /filebot/filebot.tar.xz
 
-# Define variables for Filebot:
-ENV FILEBOT_LANG=en \
+# Add local files
+COPY root/ /
+
+# Give execution permissions
+RUN chmod +x /apps/entrypoint.sh /apps/qbittorrent-config-sync.py
+
+# Create user and group
+RUN if ! getent group ${PGID}; then \
+        groupadd -g ${PGID} qbtgroup; \
+    else \
+        groupmod -n qbtgroup $(getent group ${PGID} | cut -d: -f1); \
+    fi && \
+    useradd -u ${PUID} -g qbtgroup -d /data qbtuser && \
+    chown -R qbtuser:qbtgroup /filebot /downloads /data /media
+
+
+# Set environment variables for execution
+# Set the locale
+ENV PUID=${PUID} \
+    PGID=${PGID} \
+    FILES_CHECK_PERM=n \
+    FILEBOT_LANG=en \
     FILEBOT_CONFLICT=auto \
     FILEBOT_ACTION=copy \
     FILEBOT_ARTWORK=y \
@@ -37,19 +83,14 @@ ENV FILEBOT_LANG=en \
     MOVIE_FORMAT={plex} \
     SERIE_FORMAT={plex} \
     ANIME_FORMAT="animes/{n}/{e.pad(3)} - {t}" \
-    FILEBOT_OPTS=-Dnet.filebot.archive.unrar=/usr/bin/unrar \
-    EXTRA_FILEBOT_PARAM=
+    EXTRA_FILEBOT_PARAM= \
+    HOME="/data" \
+    XDG_CONFIG_HOME="/data" \
+    XDG_DATA_HOME="/data" \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
 
-# environment settings
-ENV HOME="/data" \
-XDG_CONFIG_HOME="/data" \
-XDG_DATA_HOME="/data"
-
-
-# add local files
-COPY root/ /
-RUN chmod +x /etc/cont-init.d/*
-VOLUME ["/data"]
-VOLUME ["/downloads"]
-VOLUME ["/media"]
 EXPOSE 8080
+
+# Use this script as entry point
+ENTRYPOINT ["/apps/entrypoint.sh"]
