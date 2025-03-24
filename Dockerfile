@@ -41,29 +41,27 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen en_US.UTF-8 &&\
-    update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+    locale-gen C.UTF-8 && \
+    update-locale LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-# Configuration des répertoires et permissions
+# Add local files
+COPY root/ /
+
+# Directory and Permissions Configuration
 RUN mkdir -p \
     /filebot/data \
     /data/filebot/logs \
     /downloads \
     /media \
-    /data/qBittorrent \
-    && chmod -R 755 /filebot /downloads /data /media
+    /data/qBittorrent && \
+    chmod -R 755 /filebot /downloads /data /media && \
+    chmod +x /apps/entrypoint.sh /apps/qbittorrent-config-sync.py
 
 # Install FileBot
 RUN FILEBOT_VER=$(curl -s https://get.filebot.net/filebot/ | grep -o "FileBot_[0-9].[0-9].[0-9]" | sort | tail -n1) && \
     curl -L "https://get.filebot.net/filebot/${FILEBOT_VER}/${FILEBOT_VER}-portable.tar.xz" -o /filebot/filebot.tar.xz && \
     tar -xJf /filebot/filebot.tar.xz -C /filebot && \
     rm -rf /filebot/filebot.tar.xz
-
-# Add local files
-COPY root/ /
-
-# Give execution permissions
-RUN chmod +x /apps/entrypoint.sh /apps/qbittorrent-config-sync.py
 
 # Create user and group
 RUN if ! getent group ${PGID}; then \
