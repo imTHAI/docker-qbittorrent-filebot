@@ -29,9 +29,15 @@ RUN apt-get update && \
         duperemove \
         libchromaprint-tools \
         gosu && \
+    # Add the PPA and install qbittorent-nox
     add-apt-repository ppa:qbittorrent-team/qbittorrent-stable && \
     apt-get update && \
     apt-get install -y qbittorrent-nox && \
+    # Remove unnecessary packages
+    apt-get remove -y \
+        man \
+        lsb-release && \
+    # Clean up the package cache
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
