@@ -41,8 +41,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen C.UTF-8 && \
-    update-locale LANG=C.UTF-8 LC_ALL=C.UTF-8
+    locale-gen en_US.UTF-8 && \
+    update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 # Add local files
 COPY root/ /
@@ -91,8 +91,8 @@ ENV PUID=${PUID} \
     HOME="/data" \
     XDG_CONFIG_HOME="/data" \
     XDG_DATA_HOME="/data" \
-    LANG=C.UTF-8 \
-    LC_ALL=C.UTF-8
+    LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8
 
 EXPOSE 8080
 
