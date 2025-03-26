@@ -49,6 +49,12 @@ You can customize the behavior of the container using the following variables:
 - Setting FILES_CHECK_PERM to "yes" may significantly increase startup time.
 - If you change the default ports in the qBittorrent config, update your Docker port mappings accordingly.
 
+**Important note about FILEBOT_ACTION:**
+If you choose to set FILEBOT_ACTION to "MOVE" or "HARDLINK", you need to adapt your configuration:
+1. Use a single general mount point. For example (if you're using unRAID), map /onemount (container) to /mnt/user (host).
+2. Adjust the download folder in qBittorrent settings. For example, set it to /onemount/downloads (corresponding to your /mnt/user/downloads).
+3. Modify the fb.sh script (located in the filebot folder). Change the output to /onemount/media (which corresponds to your /mnt/user/media).
+
 ## 📂 Volumes
 
 - /data: Configuration folder
