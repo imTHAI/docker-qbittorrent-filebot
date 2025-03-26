@@ -2,13 +2,5 @@
 enabled=true
 program=/data/filebot/fb.sh \"%F\" \"%N\" \"%L\"
 
-[BitTorrent]
-Session\DefaultSavePath=/downloads/
-Session\TempPath=/downloads/incomplete/
-
 [LegalNotice]
 Accepted=true
-
-[Preferences]
-Downloads\SavePath=/downloads/
-Downloads\TempPath=/downloads/incomplete/
