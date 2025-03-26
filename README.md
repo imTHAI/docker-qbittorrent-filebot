@@ -51,7 +51,8 @@ You can customize the behavior of the container using the following variables:
 
 **Important note about FILEBOT_ACTION:**
 If you choose to set FILEBOT_ACTION to "MOVE" or "HARDLINK", you need to adapt your configuration:
-1. **Use a single general mount point**. For example (if you're using unRAID), mount /mnt/user (host) to /onemount (container). ( -v '/mnt/user':'/onemount':'rw' )
+1. **Use a single general mount point**. For example (if you're using unRAID), mount /mnt/user (host) to /onemount (container). <br>
+```( -v '/mnt/user':'/onemount':'rw' )```
 2. Adjust the download folder in qBittorrent settings. For example, set it to /onemount/downloads (corresponding to your /mnt/user/downloads).
 3. Modify the fb.sh script (located in the filebot folder). Change the output to /onemount/media (which corresponds to your /mnt/user/media).
 
