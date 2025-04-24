@@ -1,5 +1,5 @@
 # Use Ubuntu rolling as base image
-FROM ubuntu:rolling
+FROM ubuntu:24.10
 
 # Set default values for build
 ARG PUID=99
