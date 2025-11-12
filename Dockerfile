@@ -98,5 +98,4 @@ ENV PUID=${PUID} \
 EXPOSE 8080
 
 # Use this script as entry point
-#ENTRYPOINT ["/apps/entrypoint.sh"]
 ENTRYPOINT ["/usr/bin/tini", "--", "/apps/entrypoint.sh"]
