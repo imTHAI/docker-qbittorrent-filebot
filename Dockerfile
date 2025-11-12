@@ -1,5 +1,5 @@
 # Use Ubuntu rolling as base image
-FROM ubuntu:25.04
+FROM ubuntu:25.10
 
 # Set default values for build
 ARG PUID=99
@@ -28,7 +28,8 @@ RUN apt-get update && \
         jdupes \
         duperemove \
         libchromaprint-tools \
-        gosu && \
+        gosu \
+        tini && \
     # Add the PPA and install qbittorent-nox
     add-apt-repository ppa:qbittorrent-team/qbittorrent-stable && \
     apt-get update && \
@@ -97,4 +98,5 @@ ENV PUID=${PUID} \
 EXPOSE 8080
 
 # Use this script as entry point
-ENTRYPOINT ["/apps/entrypoint.sh"]
+#ENTRYPOINT ["/apps/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/apps/entrypoint.sh"]
