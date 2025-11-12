@@ -1,16 +1,13 @@
-name: Build and Push Docker image
+name: Build and Push Docker Image (qbittorrent)
 
 on:
- # push:
- #   branches: 
- #     - main
-  pull_request:
-    branches: 
-      - main
-  repository_dispatch:
-    types: [trigger-build]
-  workflow_dispatch: # Allows manual triggering
-
+  # Allows manual triggering from the GitHub Actions UI.
+  workflow_dispatch: 
+    inputs:
+      tag:
+        description: 'Version tag to build (e.g., v5.1.3)'
+        required: true
+        default: 'latest'
 
 jobs:
   build:
@@ -20,39 +17,46 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
+      # Setup Docker Buildx, required for multi-arch (even if we only build one arch here)
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
+      # --- Login Steps ---
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          
+
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Extract metadata (tags, labels) for Docker
-        uses: docker/metadata-action@v3
-        with:
-          images: |
-            ${{ secrets.DOCKER_USERNAME }}/qbittorrent-filebot
-            ghcr.io/imthai/qbittorrent-filebot
-      
-      - name: Build and push Docker image to GitHub
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/qbittorrent-filebot:latest
-
-      - name: Build and push Docker image to GitHub Packages
-        uses: docker/build-push-action@v2
+      # --- Build and Push ---
+      - name: Build and push (AMD64 only)
+        uses: docker/build-push-action@v5
+        
+        # Define the TAG_VALUE from the manual input
+        env:
+          TAG_VALUE: ${{ github.event.inputs.tag }}
+        
         with:
           context: .
+          # Builds only for AMD64 as requested.
+          platforms: linux/amd64
           push: true
-          tags: ghcr.io/imthai/qbittorrent-filebot:latest
+          
+          # Pass the version tag as a build argument if the Dockerfile needs it.
+          # Uncomment and change ARG_NAME if needed.
+          # build-args: |
+          #   ARG_NAME=${{ env.TAG_VALUE }}
+            
+          # Tags the image with both the specific version and 'latest' for both registries.
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/qbittorrent-filebot:${{ env.TAG_VALUE }}
+            ghcr.io/imthai/qbittorrent-filebot:${{ env.TAG_VALUE }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/qbittorrent-filebot:latest
+            ghcr.io/imthai/qbittorrent-filebot:latest
