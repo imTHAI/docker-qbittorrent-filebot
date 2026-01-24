@@ -63,7 +63,6 @@ RUN chmod +x /apps/entrypoint.sh \
     /opt/filebot/filebot.sh
 
 # Environment Setup
-# PUID/PGID allow the entrypoint script to map permissions at runtime
 ENV PUID=99 \
     PGID=100 \
     FILEBOT_LANG=en \
@@ -71,6 +70,11 @@ ENV PUID=99 \
     FILEBOT_ACTION=copy \
     FILEBOT_ARTWORK=y \
     FILEBOT_PROCESS_MUSIC=y \
+    # Restore naming formats to avoid mandatory ID inclusion (Fixes Issue #17)
+    MUSIC_FORMAT="{plex}" \
+    MOVIE_FORMAT="{plex}" \
+    SERIE_FORMAT="{plex}" \
+    ANIME_FORMAT="animes/{n}/{e.pad(3)} - {t}" \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
