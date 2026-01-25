@@ -14,8 +14,14 @@ This Docker image combines qBittorrent with the Filebot tool for automated media
 
 ## 📝 Description
 
-This image is based on Ubuntu and includes the latest stable release of qBittorrent and Filebot. It provides an all-in-one solution for downloading and organizing media files. 🎬🎵
+This image is a **hardened, security-focused build** based on **Wolfi (Chainguard)**. It includes the latest stable release of qBittorrent and FileBot portable. 
 
+### Why this hardened version?
+- **Minimal Surface**: Uses a minimal footprint to reduce potential security vulnerabilities.
+- **Enterprise-Grade Patching**: Built on Wolfi, ensuring low CVE counts and modern library support.
+- **Performance**: Lightweight execution using `tini` for proper signal handling and zombie process prevention.
+
+It provides an all-in-one, secure solution for downloading and organizing media files. 🎬🎵
 For more information about Filebot, please visit https://www.filebot.net
 
 ## 🔧 Variables
