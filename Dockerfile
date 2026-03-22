@@ -12,7 +12,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # Download the latest static qBittorrent binary (Self-contained, no dependencies needed)
-RUN curl -fSL "https://github.com/userdocs/qbittorrent-nox-static/releases/latest/download/x86_64-qbittorrent-nox" -o /qbittorrent-nox && \
+RUN export BINARY_URL=$(curl -s https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases/latest \
+    | grep "browser_download_url" | grep "x86_64-qbittorrent-nox" \
+    | cut -d '"' -f 4) && \
+    curl -fSL "$BINARY_URL" -o /qbittorrent-nox && \
     chmod +x /qbittorrent-nox
 
 # Download and extract the latest FileBot portable version
