@@ -47,8 +47,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/docker-qbittorrent-filebot:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/docker-qbittorrent-filebot:${{ steps.upstream.outputs.tag }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/qbittorrent-filebot:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/qbittorrent-filebot:${{ steps.upstream.outputs.tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
