@@ -47,7 +47,10 @@ fi
 python3 "/apps/qbittorrent-config-sync.py"
 
 # 6. Start qBittorrent
+# Remove stale lock files left by previous crashes to avoid immediate exit
+rm -f /data/qBittorrent/lockfile /data/qBittorrent/ipc-socket
 echo "Starting qBittorrent..."
-# Use su-exec to drop root privileges and start qBt as PUID:PGID
-# --profile=/data ensures the config is read from the correct mapped volume
-exec su-exec ${PUID}:${PGID} qbittorrent-nox --confirm-legal-notice
+# Drop root privileges, set HOME for XDG cache resolution, use --profile for explicit config path
+# Run as background process so bash (PID 1 via tini) stays alive and wait exits cleanly with qBt
+su-exec ${PUID}:${PGID} env HOME=/data qbittorrent-nox --confirm-legal-notice &
+wait $!
