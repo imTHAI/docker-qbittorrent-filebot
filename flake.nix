@@ -22,7 +22,7 @@
       # test — x86_64 natif → à lancer depuis jakku
       x86_64-linux.test = mkApp pkgsLinux ''
         set -e
-        docker build --platform linux/amd64 -t ${image}:test .
+        docker build --pull --platform linux/amd64 -t ${image}:test .
         docker push ${image}:test
         echo "✓ ${image}:test pushed"
       '';
