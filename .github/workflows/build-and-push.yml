@@ -32,6 +32,11 @@ jobs:
             echo "tag=none" >> $GITHUB_OUTPUT
           fi
 
+      # MODIFICATION 1 : Installer QEMU pour émuler l'ARM64 pendant le build
+      - name: Set up QEMU
+        if: steps.upstream.outputs.tag != steps.cache.outputs.tag || github.event_name == 'workflow_dispatch'
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         if: steps.upstream.outputs.tag != steps.cache.outputs.tag || github.event_name == 'workflow_dispatch'
         uses: docker/setup-buildx-action@v3
@@ -49,6 +54,8 @@ jobs:
         with:
           context: .
           push: true
+          # MODIFICATION 2 : Définir explicitement les deux plateformes cibles
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/qbittorrent-filebot:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/qbittorrent-filebot:${{ steps.upstream.outputs.tag }}
