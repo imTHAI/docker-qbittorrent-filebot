@@ -11,10 +11,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
+# Target architecture automatically injected by Docker Buildx (amd64, arm64, etc.)
+ARG TARGETARCH
+
 # Download the latest static qBittorrent binary (Self-contained, no dependencies needed)
-RUN export BINARY_URL=$(curl -s https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases/latest \
-    | grep "browser_download_url" | grep "x86_64-qbittorrent-nox" \
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+        ARCH_TAG="x86_64"; \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
+        ARCH_TAG="aarch64"; \
+    else \
+        echo "❌ Error: Unsupported architecture: $TARGETARCH" && exit 1; \
+    fi && \
+    \
+    BINARY_URL=$(curl -s https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases/latest \
+    | grep "browser_download_url" | grep "${ARCH_TAG}-qbittorrent-nox" \
     | cut -d '"' -f 4) && \
+    \
+    if [ -z "$BINARY_URL" ]; then \
+        echo "❌ Error: Failed to fetch binary URL for ${ARCH_TAG}" && exit 1; \
+    fi && \
+    \
+    echo "⬇️ Downloading qBittorrent-nox from: $BINARY_URL" && \
     curl -fSL "$BINARY_URL" -o /qbittorrent-nox && \
     chmod +x /qbittorrent-nox
 
@@ -47,7 +64,8 @@ RUN apk add --no-cache \
 # and a legacy symlink for backward compatibility with older scripts
 RUN ln -s /opt/filebot /filebot && \
     ln -s /usr/lib/libcurl.so.4 /usr/lib/libcurl-gnutls.so.4 && \
-    ln -s /usr/lib/libmediainfo.so.0 /usr/lib/libmediainfo.so.4 || true
+    ln -s /usr/lib/libmediainfo.so.0 /usr/lib/libmediainfo.so.4 && \
+    ln -s /usr/lib/libz.so.1 /usr/lib/libz.so || true
 
 # Initialize application structure
 RUN mkdir -p /apps /data /media /downloads /src /opt/filebot
