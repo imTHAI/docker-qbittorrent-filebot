@@ -6,6 +6,7 @@ This Docker image combines qBittorrent with the Filebot tool for automated media
 
 ## 📚 Table of Contents
 - [Description](#description)
+- [Supported Platforms](#supported-platforms)
 - [Variables](#variables)
 - [Important Notes](#important-notes)
 - [Volumes](#volumes)
@@ -23,6 +24,17 @@ This image is a **hardened, security-focused build** based on **Wolfi (Chainguar
 
 It provides an all-in-one, secure solution for downloading and organizing media files. 🎬🎵
 For more information about Filebot, please visit https://www.filebot.net
+
+## 🖥️ Supported Platforms
+
+This image is built for the following architectures:
+
+| Platform | Architecture |
+| -------- | ------------ |
+| `linux/amd64` | x86_64 — standard servers, NAS (unRAID, Synology x86) |
+| `linux/arm64` | aarch64 — Raspberry Pi 4/5, ARM NAS, Apple Silicon VMs |
+
+Docker automatically pulls the correct image for your system when using `imthai/qbittorrent-filebot:latest`.
 
 ## 🔧 Variables
 
@@ -82,19 +94,19 @@ Important notes:
 
 ## 🚀 Usage Example
 ```sh
-docker run -d –name=‘qbittorrent-filebot’ 
-–net=‘br0’ –ip=‘10.3.12.21’ –ip6=‘2a01:d33b:f44f:985a:10:2:12:21’ 
--e TZ=“Europe/Paris” 
--e ‘FILEBOT_ACTION’=‘copy’ 
--e ‘FILEBOT_LANG’=‘en’ 
--e ‘MOVIE_FORMAT’=’{plex}’ 
--e ‘SERIE_FORMAT’=’{plex}’ 
--e ‘PUID’=‘99’ 
--e ‘PGID’=‘100’ 
--v ‘/mnt/user/media/’:’/media’:‘rw’ 
--v ‘/mnt/user/downloads’:’/downloads’:‘rw’ 
--v ‘/mnt/user/appdata/qbittorrent-filebot/’:’/data’:‘rw’ 
-‘imthai/qbittorrent-filebot’
+docker run -d –name='qbittorrent-filebot' 
+–net='br0' –ip='10.3.12.21' –ip6='2a01:d33b:f44f:985a:10:2:12:21' 
+-e TZ="Europe/Paris" 
+-e 'FILEBOT_ACTION'='copy' 
+-e 'FILEBOT_LANG'='en' 
+-e 'MOVIE_FORMAT'='{plex}' 
+-e 'SERIE_FORMAT'='{plex}' 
+-e 'PUID'='99' 
+-e 'PGID'='100' 
+-v '/mnt/user/media/':'/media':'rw' 
+-v '/mnt/user/downloads':'/downloads':'rw' 
+-v '/mnt/user/appdata/qbittorrent-filebot/':'/data':'rw' 
+'imthai/qbittorrent-filebot'
 ```
 
 Note: This example uses a custom network configuration. Adjust according to your needs. 🛠️
