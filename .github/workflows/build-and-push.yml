@@ -58,8 +58,11 @@ jobs:
         with:
           context: .
           push: true
-          # MODIFICATION 2 : Définir explicitement les deux plateformes cibles
           platforms: linux/amd64,linux/arm64
+          # QBT_VERSION busts the builder layer cache when the version changes,
+          # ensuring the binary is re-downloaded rather than served from GHA cache.
+          build-args: |
+            QBT_VERSION=${{ steps.upstream.outputs.tag }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/qbittorrent-filebot:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/qbittorrent-filebot:${{ steps.upstream.outputs.tag }}

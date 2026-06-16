@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Target architecture automatically injected by Docker Buildx (amd64, arm64, etc.)
 ARG TARGETARCH
+# Version passed by the workflow to bust this layer's cache on each new release
+ARG QBT_VERSION
 
 # Download the latest static qBittorrent binary (Self-contained, no dependencies needed)
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
