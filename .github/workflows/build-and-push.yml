@@ -16,11 +16,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Get latest qBittorrent release
+      - name: Get latest qBittorrent static binary release
         id: upstream
         run: |
-          TAG=$(curl -s https://api.github.com/repos/qbittorrent/qBittorrent/releases/latest \
-            | jq -r '.tag_name')
+          # Track userdocs/qbittorrent-nox-static (actual binary source) rather than
+          # qbittorrent/qBittorrent — avoids builds where qbt releases but the static
+          # binary isn't yet available, producing an image with the previous version.
+          # Tag format: "release-5.2.2_v2.0.13" -> "v5.2.2"
+          TAG=$(curl -s https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases/latest \
+            | jq -r '.tag_name' | sed 's/release-\([0-9.]*\)_.*/v\1/')
           echo "tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: Get last built version
