@@ -23,8 +23,12 @@ jobs:
           # qbittorrent/qBittorrent — avoids builds where qbt releases but the static
           # binary isn't yet available, producing an image with the previous version.
           # Tag format: "release-5.2.2_v2.0.13" -> "v5.2.2"
-          TAG=$(curl -s https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases/latest \
-            | jq -r '.tag_name' | sed 's/release-\([0-9.]*\)_.*/v\1/')
+          RAW_TAG=$(gh release view --repo userdocs/qbittorrent-nox-static --json tagName -q .tagName)
+          if [ -z "$RAW_TAG" ] || [ "$RAW_TAG" = "null" ]; then
+            echo "Failed to resolve upstream tag"
+            exit 1
+          fi
+          TAG=$(echo "$RAW_TAG" | sed 's/release-\([0-9.]*\)_.*/v\1/')
           echo "tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: Get last built version
