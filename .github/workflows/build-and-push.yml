@@ -18,6 +18,8 @@ jobs:
 
       - name: Get latest qBittorrent static binary release
         id: upstream
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           # Track userdocs/qbittorrent-nox-static (actual binary source) rather than
           # qbittorrent/qBittorrent — avoids builds where qbt releases but the static
