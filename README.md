@@ -64,6 +64,7 @@ You can customize the behavior of the container using the following variables:
 - Add your Filebot license file (psm file) to /data/filebot folder and restart the container.
 - Default qBittorrent login is "admin". A new password is generated at each startup (check logs) until you set a permanent one.
 - To customize the fb.sh script, set custom=1 inside the script to prevent overwriting on restart.
+- qBittorrent calls fb.sh on completion with four arguments: `"%F" "%N" "%L" "%T"` (content path, torrent name, category, current tracker URL). The `[AutoRun]` program line is enforced at every startup from `/src/check`, so edits made in the qBittorrent UI do not survive a restart. The tracker argument lets a custom fb.sh route by tracker (e.g. `export FB_TRACKER="$4"`, then `System.getenv('FB_TRACKER')` in a filebot format); it is empty if the torrent never reached a tracker.
 - Setting FILES_CHECK_PERM to "yes" may significantly increase startup time.
 - If you change the default ports in the qBittorrent config, update your Docker port mappings accordingly (Not needed if you use a dedicated ip for the container, or host network mode).
 
