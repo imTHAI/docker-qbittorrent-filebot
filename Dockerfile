@@ -17,6 +17,8 @@ ARG TARGETARCH
 ARG QBT_VERSION
 
 # Download the latest static qBittorrent binary (Self-contained, no dependencies needed)
+# Uses the releases/latest/download redirect rather than api.github.com: unauthenticated
+# API calls are limited to 60/h per IP, and CI runners share their egress IPs.
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
         ARCH_TAG="x86_64"; \
     elif [ "$TARGETARCH" = "arm64" ]; then \
@@ -25,16 +27,9 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
         echo "❌ Error: Unsupported architecture: $TARGETARCH" && exit 1; \
     fi && \
     \
-    BINARY_URL=$(curl -s https://api.github.com/repos/userdocs/qbittorrent-nox-static/releases/latest \
-    | grep "browser_download_url" | grep "${ARCH_TAG}-qbittorrent-nox" \
-    | cut -d '"' -f 4) && \
-    \
-    if [ -z "$BINARY_URL" ]; then \
-        echo "❌ Error: Failed to fetch binary URL for ${ARCH_TAG}" && exit 1; \
-    fi && \
-    \
+    BINARY_URL="https://github.com/userdocs/qbittorrent-nox-static/releases/latest/download/${ARCH_TAG}-qbittorrent-nox" && \
     echo "⬇️ Downloading qBittorrent-nox from: $BINARY_URL" && \
-    curl -fSL "$BINARY_URL" -o /qbittorrent-nox && \
+    curl -fSL --retry 5 --retry-all-errors "$BINARY_URL" -o /qbittorrent-nox && \
     chmod +x /qbittorrent-nox
 
 # Download and extract the latest FileBot portable version
